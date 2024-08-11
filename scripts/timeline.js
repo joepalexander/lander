@@ -45,6 +45,13 @@ const sundayActivities = [
     { start: "23:59", activity: "Sleeping" }
 ];
 
+// Define contactable periods (UTC+1)
+const contactableTimes = [
+    { day: "weekday", start: "07:30", end: "17:30" }, // Example contactable times for weekdays
+    { day: "saturday", start: "10:00", end: "18:00" },
+    { day: "sunday", start: "10:00", end: "20:00" }
+];
+
 const now = new Date();
 const dayOfWeek = now.getUTCDay();
 switch (dayOfWeek) {
@@ -153,6 +160,35 @@ function createTimeMarkers() {
     });
 }
 
+// New function to create contactable time series
+function createContactableMarkers() {
+    const contactableContainer = document.querySelector('.contactable-container');
+    let contactablePeriod = [];
+
+    // Determine contactable period based on the day
+    if (dayOfWeek === 0) {
+        contactablePeriod = contactableTimes.find(time => time.day === "sunday");
+    } else if (dayOfWeek === 6) {
+        contactablePeriod = contactableTimes.find(time => time.day === "saturday");
+    } else {
+        contactablePeriod = contactableTimes.find(time => time.day === "weekday");
+    }
+
+    if (contactablePeriod) {
+        const startMinutes = contactablePeriod.start.split(":").map(Number);
+        const endMinutes = contactablePeriod.end.split(":").map(Number);
+        const startPercentage = (startMinutes[0] * 60 + startMinutes[1]) / (24 * 60);
+        const endPercentage = (endMinutes[0] * 60 + endMinutes[1]) / (24 * 60);
+
+        const contactableMarker = document.createElement('div');
+        contactableMarker.className = 'contactable-marker';
+        contactableMarker.style.left = `calc(${startPercentage * 100}% - 10px)`;
+        contactableMarker.style.width = `calc(${(endPercentage - startPercentage) * 100}% - 10px)`;
+
+        contactableContainer.appendChild(contactableMarker);
+    }
+}
+
 function getCurrentTime() {
    // Get the current time in the UK (UTC+1)
     const now = new Date();
@@ -168,5 +204,8 @@ function getCurrentTime() {
 
 // Initialize time markers and update the timeline every minute
 createTimeMarkers();
+createContactableMarkers();
 updateTimeline();
 setInterval(updateTimeline, 60000);
+
+
