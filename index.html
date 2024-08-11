@@ -106,7 +106,7 @@
     <!-- End Google Tag Manager (noscript) -->
     <div class="container">
 
-        <section>
+        <section id="hero">
             <div class="centre">
                 <img class="profile-pic" src="assets/hero.jpg" alt="me" loading="lazy" />
                 <h1 class="hero-header">Joseph P. Alexander</h1>
@@ -115,7 +115,7 @@
         </section>
 
 
-        <section>
+        <section id="aboutme">
             <div class="centre aboutme">
                 <h1 class="header">About Me</h1>
                 <p>I'm Joe Alexander, a dedicated Web Developer based in London, England, with a strong foundation in
@@ -161,7 +161,7 @@
             </div>
         </section> -->
 
-        <section>
+        <section id="contact">
             <div class="centre">
                 <h1 class="header">Contact</h1>
                 <p><a href="mailto:joe@josephpaulalexander.com">joe@josephpaulalexander.com</a></p>
@@ -170,9 +170,17 @@
                 </a>
             </div>
         </section>
+        <a onclick="navigatoToSection('hero')">
+        <div id="scroll-to-top" class="scroll-to-top">
+
+                        <img src="assets/up.svg" alt="Scroll to top" />
+            </div>
+        </a>
+
     </div>
+
 </body>
 <script src=" scripts/utils.js"></script>
-                    <script src="scripts/timeline.js"></script>
+<script src="scripts/timeline.js"></script>
 
 </html>

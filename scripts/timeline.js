@@ -145,9 +145,9 @@ function createTimeMarkers() {
 }
 
 function getCurrentTime() {
-   //get the current time in the UK
+   //get the current time in the UK utc + 1
     const now = new Date();
-    const hours = now.getUTCHours();
+    const hours = now.getUTCHours() + 1;
     const minutes = now.getUTCMinutes();
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }

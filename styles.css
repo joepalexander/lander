@@ -59,7 +59,7 @@
             font-family: 'Hero', sans-serif !important;
             letter-spacing: 0.1rem;
             font-size: 3rem;
-            color: #fff;
+            color: #ffcdcd;
             text-align: center;
             margin-bottom: 0.2rem;
             font-style: italic;
@@ -73,6 +73,30 @@
             display: block;
             border: 5px solid #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: border 0.5s linear;
+            cursor:text;
+        }
+        
+        .profile-pic:hover{
+            animation: border-spin 2s linear infinite;
+        }
+        
+        @keyframes border-spin {
+            0% {
+                border-color: #fff;
+            }
+            25% {
+                border-color: #ff0000;
+            }
+            50% {
+                border-color: #00ff00;
+            }
+            75% {
+                border-color: #0000ff;
+            }
+            100% {
+                border-color: #fff;
+            }
         }
 
         .header{
@@ -494,4 +518,30 @@
                 display: none;
             }
             
+        }
+
+            .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Add this line to center the image vertically */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .scroll-to-top:hover {
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffcc);
+            animation: shake 0.5s;
+            cursor: pointer;
+        }
+        
+        .scroll-to-top img {
+            width: 20px;
+            height: 20px;
         }
