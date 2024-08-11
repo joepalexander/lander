@@ -114,6 +114,10 @@ function updateTimeline() {
             timeMarker.classList.remove('elapsed');
         }
     });
+
+    // Update the current time every minute
+    const currentTime = document.getElementById('current-time');
+    currentTime.textContent = getCurrentTime();
 }
 
 function createTimeMarkers() {
@@ -138,6 +142,14 @@ function createTimeMarkers() {
         timeMarker.appendChild(tooltipLine);
         timelineContainer.appendChild(timeMarker);
     });
+}
+
+function getCurrentTime() {
+   //get the current time in the UK
+    const now = new Date();
+    const hours = now.getUTCHours();
+    const minutes = now.getUTCMinutes();
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
 
 // Initialize time markers and update the timeline every minute

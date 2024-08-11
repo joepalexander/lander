@@ -65,6 +65,16 @@
             font-style: italic;
         }
 
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: block;
+            border: 5px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
         .header{
             font-family: 'Hero', sans-serif !important;
             letter-spacing: 0.1rem;
@@ -152,6 +162,12 @@
         .tooltip:hover .tooltiptext {
             visibility: visible;
             opacity: 1;
+        }
+
+        .current-time {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #ffffff;
         }
 
 
