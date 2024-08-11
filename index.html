@@ -17,14 +17,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Meta Description for SEO -->
-    <meta name="description" content="Joseph P. Alexander - Full Stack Developer based in London, England. Specializing in C#, T-SQL, and full-stack development with experience in web development, data engineering, and leadership.">
+    <meta name="description"
+        content="Joseph P. Alexander - Full Stack Developer based in London, England. Specializing in C#, T-SQL, and full-stack development with experience in web development, data engineering, and leadership.">
 
     <!-- Meta Keywords for SEO -->
-    <meta name="keywords" content="Joseph P. Alexander, Full Stack Developer, Web Developer, London, C#, T-SQL, data engineering, SSY, MasterControl">
+    <meta name="keywords"
+        content="Joseph P. Alexander, Full Stack Developer, Web Developer, London, C#, T-SQL, data engineering, SSY, MasterControl">
 
     <!-- Open Graph Meta Tags for social sharing -->
     <meta property="og:title" content="Joseph P. Alexander - Full Stack Developer">
-    <meta property="og:description" content="Experienced Web Developer with a strong foundation in C#, T-SQL, and full-stack development. Based in London, England.">
+    <meta property="og:description"
+        content="Experienced Web Developer with a strong foundation in C#, T-SQL, and full-stack development. Based in London, England.">
     <meta property="og:image" content="assets/hero.jpg">
     <meta property="og:url" content="https://www.josephpaulalexander.com">
     <meta property="og:type" content="website">
@@ -83,145 +86,7 @@
       "url": "https://www.josephpaulalexander.com"
     }
     </script>
-    <style>
-        /* Root styles */
-        :root {
-            --bg-gradient: linear-gradient(45deg, #ff00cc, #3333ff, #00ffcc);
-        }
-
-        /* Global styles */
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            scroll-behavior: smooth;
-            font-family: 'Roboto', sans-serif;
-            /* Default font */
-            overflow: hidden;
-            /* Prevent scrolling outside container */
-        }
-
-        /* Container for sections */
-        .container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
-            /* Enable scrolling within the container */
-            scrollbar-width: none;
-            /* Firefox */
-            -ms-overflow-style: none;
-            /* Internet Explorer and Edge */
-        }
-
-        .container::-webkit-scrollbar {
-            display: none;
-            /* Chrome, Safari, and Opera */
-        }
-
-        /* Each section takes up the entire viewport */
-        section {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            scroll-snap-align: start;
-            background: var(--bg-gradient);
-            flex-shrink: 0;
-            /* Prevent sections from shrinking */
-        }
-
-        /* Centered content */
-        .centre {
-            text-align: center;
-            color: #fff;
-        }
-
-        .centre h1 {
-            margin-bottom: 0.2rem;
-            font-family: 'Playfair Display', serif;
-            /* Special font for headings */
-        }
-
-        .centre span {
-            font-size: 1rem;
-            font-style: italic;
-        }
-
-        .centre a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .linkedin {
-            width: 10%;
-            margin-top: 1rem;
-            filter: invert(100%) sepia(100%) saturate(100%) hue-rotate(180deg) brightness(100%);
-
-
-        }
-
-        .aboutme p {
-            font-size: 1rem;
-            padding: 1rem;
-        }
-
-        /* Tooltip container */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: help;
-        }
-
-        /* Tooltip text */
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            /* Position the tooltip above the text */
-            left: 50%;
-            margin-left: -100px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        /* Tooltip arrow */
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #555 transparent transparent transparent;
-        }
-
-        /* Show the tooltip text when you mouse over the tooltip container */
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-
-        /* Responsive font size for small screens */
-        @media (max-width: 600px) {
-            .centre {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -272,6 +137,16 @@
                         full-stack development</b>. I'm passionate about creating efficient, scalable solutions and
                     enjoy working in dynamic
                     environments that challenge my technical and leadership abilities.</p>
+                    <div class="timeline-container">
+                        <div class="timeline-line"></div>
+                        <div class="current-time-marker" id="current-time-marker">
+                            <div class="tooltip" id="current-tooltip">Loading...</div>
+                            <div class="tooltip-line" id="current-tooltip-line"></div>
+                        </div>
+                    </div>
+                    <div class="current-event" id="current-event">Loading...</div>
+                </div>
+            
         </section>
 
 
@@ -311,4 +186,154 @@
         }
     });
 </script>
+
+<script>
+    let activities = [];
+    const weekdayActivities = [
+        { start: "00:00", activity: "Sleeping" },
+        { start: "05:30", activity: "Wake Up" },
+        { start: "06:15", activity: "Commute to Work" },
+        { start: "07:15", activity: "Work" },
+        { start: "11:00", activity: "Coffee break" },
+        { start: "11:15", activity: "Work" },
+        { start: "14:00", activity: "Lunch break" },
+        { start: "15:00", activity: "Work" },
+        { start: "17:30", activity: "Commute home" },
+        { start: "19:00", activity: "Dinner" },
+        { start: "20:00", activity: "Gym/Relax" },
+        { start: "21:00", activity: "Catching up on Emails" },
+        { start: "22:00", activity: "Sleep preparation" },
+        { start: "23:00", activity: "Heading to bed" },
+        { start: "23:59", activity: "Sleeping" }
+    ];
+
+    const saturdayActivities = [
+        { start: "00:00", activity: "Sleeping" },
+        { start: "07:00", activity: "Wake Up" },
+        { start: "10:00", activity: "Exercise" },
+        { start: "12:00", activity: "Lunch" },
+        { start: "13:00", activity: "Relaxing" },
+        { start: "15:00", activity: "Hobbies" },
+        { start: "18:00", activity: "Dinner" },
+        { start: "19:00", activity: "Socializing" },
+        { start: "22:00", activity: "Sleep preparation" },
+        { start: "23:00", activity: "Heading to bed" },
+        { start: "23:59", activity: "Sleeping" }
+    ];
+
+    const sundayActivities = [
+        { start: "00:00", activity: "Sleeping" },
+        { start: "08:00", activity: "Wake Up" },
+        { start: "08:30", activity: "Exercise" },
+        { start: "12:30", activity: "Lunch" },
+        { start: "13:00", activity: "Relaxing" },
+        { start: "14:00", activity: "Hobbies" },
+        { start: "18:30", activity: "Dinner" },
+        { start: "21:00", activity: "Check emails & prepare the for week ahead." },
+        { start: "22:00", activity: "Sleep preparation" },
+        { start: "23:00", activity: "Heading to bed" },
+        { start: "23:59", activity: "Sleeping" }
+    ];
+
+    const now = new Date();
+    const dayOfWeek = now.getUTCDay();
+    switch (dayOfWeek) {
+        case 0: // Sunday
+            activities = sundayActivities;
+            break;
+        case 6: // Saturday
+            activities = saturdayActivities;
+            break;
+        default:
+            activities = weekdayActivities;
+            break;
+    }
+
+    function getCurrentActivity() {
+        const now = new Date();
+        const currentTime = now.getUTCHours() * 60 + now.getUTCMinutes();
+
+        for (let i = activities.length - 1; i >= 0; i--) {
+            const [hours, minutes] = activities[i].start.split(":").map(Number);
+            const activityTime = hours * 60 + minutes;
+            if (currentTime >= activityTime) {
+                return activities[i].activity;
+            }
+        }
+        return activities[0].activity; // Default to the first activity if no match is found
+    }
+
+    function updateTimeline() {
+        const now = new Date();
+        const hours = now.getUTCHours();
+        const minutes = now.getUTCMinutes();
+        const totalMinutes = hours * 60 + minutes;
+        const percentageOfDay = totalMinutes / (24 * 60);
+
+        const marker = document.getElementById('current-time-marker');
+        const tooltip = document.getElementById('current-tooltip');
+        const tooltipLine = document.getElementById('current-tooltip-line');
+        const currentEvent = document.getElementById('current-event');
+
+        // Position current time marker based on time
+        marker.style.left = `calc(${percentageOfDay * 100}% - 10px)`;
+
+        // Get the current activity
+        const currentActivity = getCurrentActivity();
+
+        // Update tooltip text based on current activity
+        tooltip.textContent = currentActivity;
+
+        // Update title attribute for tooltip
+        marker.title = currentActivity;
+
+        // Update current event text for mobile
+        currentEvent.textContent = `${currentActivity}`;
+
+        // Position the tooltip line
+        tooltipLine.style.left = `calc(${percentageOfDay * 100}% - 1px)`;
+
+        // Update the green fill for elapsed events
+        const timeMarkers = document.querySelectorAll('.time-marker');
+        timeMarkers.forEach((timeMarker, index) => {
+            const [hours, minutes] = activities[index].start.split(":").map(Number);
+            const activityTime = hours * 60 + minutes;
+            if (totalMinutes >= activityTime) {
+                timeMarker.classList.add('elapsed');
+            } else {
+                timeMarker.classList.remove('elapsed');
+            }
+        });
+    }
+
+    function createTimeMarkers() {
+        const timelineContainer = document.querySelector('.timeline-container');
+
+        activities.forEach(activity => {
+            const [hours, minutes] = activity.start.split(":").map(Number);
+            const percentageOfDay = (hours * 60 + minutes) / (24 * 60);
+
+            const timeMarker = document.createElement('div');
+            timeMarker.className = 'time-marker';
+            timeMarker.style.left = `calc(${percentageOfDay * 100}% - 10px)`;
+
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = activity.activity;
+
+            const tooltipLine = document.createElement('div');
+            tooltipLine.className = 'tooltip-line';
+
+            timeMarker.appendChild(tooltip);
+            timeMarker.appendChild(tooltipLine);
+            timelineContainer.appendChild(timeMarker);
+        });
+    }
+
+    // Initialize time markers and update the timeline every minute
+    createTimeMarkers();
+    updateTimeline();
+    setInterval(updateTimeline, 60000);
+</script>
+
 </html>
