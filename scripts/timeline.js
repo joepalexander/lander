@@ -39,7 +39,7 @@ const sundayActivities = [
     { start: "13:00", activity: "Relaxing" },
     { start: "14:00", activity: "Hobbies" },
     { start: "18:30", activity: "Dinner" },
-    { start: "21:00", activity: "Check emails & prepare the for week ahead." },
+    { start: "21:00", activity: "Check emails & prepare for the week ahead." },
     { start: "22:00", activity: "Sleep preparation" },
     { start: "23:00", activity: "Heading to bed" },
     { start: "23:59", activity: "Sleeping" }
@@ -61,7 +61,11 @@ switch (dayOfWeek) {
 
 function getCurrentActivity() {
     const now = new Date();
-    const currentTime = now.getUTCHours() * 60 + now.getUTCMinutes();
+    let currentTime = (now.getUTCHours() + 1) * 60 + now.getUTCMinutes(); // Adding 1 hour for UTC+1
+
+    if (currentTime >= 1440) { // Handle overflow past midnight
+        currentTime -= 1440;
+    }
 
     for (let i = activities.length - 1; i >= 0; i--) {
         const [hours, minutes] = activities[i].start.split(":").map(Number);
@@ -75,8 +79,13 @@ function getCurrentActivity() {
 
 function updateTimeline() {
     const now = new Date();
-    const hours = now.getUTCHours();
+    let hours = now.getUTCHours() + 1; // Adding 1 hour for UTC+1
     const minutes = now.getUTCMinutes();
+
+    if (hours >= 24) { // Handle overflow past midnight
+        hours -= 24;
+    }
+
     const totalMinutes = hours * 60 + minutes;
     const percentageOfDay = totalMinutes / (24 * 60);
 
@@ -145,10 +154,15 @@ function createTimeMarkers() {
 }
 
 function getCurrentTime() {
-   //get the current time in the UK utc + 1
+   // Get the current time in the UK (UTC+1)
     const now = new Date();
-    const hours = now.getUTCHours() + 1;
+    let hours = now.getUTCHours() + 1; // Adding 1 hour for UTC+1
     const minutes = now.getUTCMinutes();
+
+    if (hours >= 24) { // Handle overflow past midnight
+        hours -= 24;
+    }
+
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
 
