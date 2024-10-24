@@ -86,6 +86,25 @@
       "url": "https://www.josephpaulalexander.com"
     }
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $.getJSON('./content.json', function(data) {
+            $('#profile-pic').attr('src', data.hero.profilePic);
+            $('#hero-name').text(data.hero.name);
+            $('#hero-title').text(data.hero.title);
+
+            $('#aboutme-header').text(data.aboutme.header);
+            $('#aboutme-content').html(data.aboutme.content);
+
+            $('#skills-header').text(data.skills.header);
+            $('#skills-content').html(data.skills.content);
+
+            $('#contact-header').text(data.contact.header);
+            $('#contact-email').text(data.contact.email);
+            $('#contact-email').attr('href', `mailto:${data.contact.email}`);
+            $('#contact-linkedin').attr('href', data.contact.linkedin);
+        });
+    </script>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -108,37 +127,17 @@
 
         <section id="hero">
             <div class="centre">
-                <img class="profile-pic" src="assets/hero.jpg" alt="me" loading="lazy" />
-                <h1 class="hero-header">Joseph P. Alexander</h1>
-                <span>Full Stack Developer</span>
+                <img class="profile-pic" id="profile-pic" alt="me" loading="lazy" />
+                <h1 class="hero-header" id="hero-name"></h1>
+                <span id="hero-title"></span>
             </div>
         </section>
 
 
         <section id="aboutme">
             <div class="centre aboutme">
-                <h1 class="header">About Me</h1>
-                <p>I'm Joe Alexander, a dedicated Web Developer based in London, England, with a strong foundation in
-                    web development.<br /> <b>I hold a BSc (Hons) in Computer Science (First Class)</b> and have
-                    experience in data engineering and full-stack development.<br /><br /> My professional journey has
-                    seen me work with
-                    organizations like <b class="tooltip-companies"><u>SSY in London</u><span
-                            class="tooltiptext">Simpson Spence
-                            Young
-                            (SSY) is one of the world's largest and most established shipbroking companies. Founded in
-                            1880, SSY provides a wide range of services in the maritime and shipping industry. These
-                            services include chartering, sale and purchase of ships, market research, and financial
-                            advice related to shipping. SSY operates globally with offices in major shipping hubs around
-                            the world.</span></b> and <b class="tooltip-companies"><u>MasterControl in Utah</u><span
-                            class="tooltiptext">MasterControl Inc. provides quality management software (QMS) and
-                            services that help regulated companies, particularly in life sciences and manufacturing,
-                            ensure compliance with regulatory standards and enhance operational efficiency. Their
-                            software solutions manage key quality processes like document control, change control,
-                            audits, CAPA, training management, and supplier management.</span></b>, where
-                    I've honed my skills in <b>C#, T-SQL, and
-                        full-stack development</b>. I'm passionate about creating efficient, scalable solutions and
-                    enjoy working in dynamic
-                    environments that challenge my technical and leadership abilities.</p>
+                <h1 class="header" id="aboutme-header"></h1>
+                <p id="aboutme-content"></p>
                 <div class="timeline-container">
                     <div class="timeline-line"></div>
                     <div class="current-time-marker" id="current-time-marker">
@@ -157,9 +156,8 @@
 
         <section id="skills">
             <div class="centre aboutme">
-                <h1 class="header">Portfolio</h1>
-                <p>While I aim to keep my work and personal life distinct, I occasionally take on projects that I'm
-                    excited to share. You can find these here or on my GitHub page..</p>
+                <h1 class="header" id="skills-header"></h1>
+                <p id="skills-content"></p>
                 <div class="github">
                     <a href="https://github.com/joepalexander" target="_blank">
                         <img src="assets/github-mark-white.png" alt="GitHub" loading="lazy">
@@ -170,25 +168,23 @@
 
         <section id="contact">
             <div class="centre">
-                <h1 class="header">Contact</h1>
-                <p><a href="mailto:joe@josephpaulalexander.com">joe@josephpaulalexander.com</a></p>
-                <a href="https://www.linkedin.com/in/joecompare/" target="_blank">
-                    <img class="linkedin" src="assets/LI-In-Bug.png" alt="LinkedIn"">
+                <h1 class="header" id="contact-header"></h1>
+                <p><a id="contact-email"></a></p>
+                <a id="contact-linkedin" target="_blank">
+                    <img class="linkedin" src="assets/LI-In-Bug.png" alt="LinkedIn">
                 </a>
             </div>
         </section>
-        <a onclick=" navigatoToSection('hero')">
-                    <div id="scroll-to-top" class="scroll-to-top">
-
-                        <img src="assets/up.svg" alt="Scroll to top" />
-                    </div>
-                </a>
-
+        <a onclick="navigatoToSection('hero')">
+            <div id="scroll-to-top" class="scroll-to-top">
+                <img src="assets/up.svg" alt="Scroll to top" />
             </div>
+        </a>
 
+    </div>
+
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/timeline.js"></script>
 </body>
-<script src=" scripts/utils.js"></script>
-<script src="scripts/timeline.js"></script>
-
 
 </html>
