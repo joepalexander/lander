@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ripple.css">
+
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({
@@ -88,24 +91,36 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $.getJSON('./content.json', function(data) {
-            $('#profile-pic').attr('src', data.hero.profilePic);
-            $('#hero-name').text(data.hero.name);
-            $('#hero-title').text(data.hero.title);
-
-            $('#aboutme-header').text(data.aboutme.header);
-            $('#aboutme-content').html(data.aboutme.content);
-
-            $('#skills-header').text(data.skills.header);
-            $('#skills-content').html(data.skills.content);
-
-            $('#contact-header').text(data.contact.header);
-            $('#contact-email').text(data.contact.email);
-            $('#contact-email').attr('href', `mailto:${data.contact.email}`);
-            $('#contact-linkedin').attr('href', data.contact.linkedin);
+        $(document).ready(function() {
+            // Show the ripple loader and overlay
+            $('#ripple-loader').show();
+            $('#ripple-overlay').show();
+    
+            $.getJSON('./content.json', function(data) {
+                $('#profile-pic').attr('src', data.hero.profilePic);
+                $('#hero-name').text(data.hero.name);
+                $('#hero-title').text(data.hero.title);
+    
+                $('#aboutme-header').text(data.aboutme.header);
+                $('#aboutme-content').html(data.aboutme.content);
+    
+                $('#skills-header').text(data.skills.header);
+                $('#skills-content').html(data.skills.content);
+    
+                $('#contact-header').text(data.contact.header);
+                $('#contact-email').text(data.contact.email);
+                $('#contact-email').attr('href', `mailto:${data.contact.email}`);
+                $('#contact-linkedin').attr('href', data.contact.linkedin);
+    
+                // Hide the ripple loader and overlay
+                //wait 2 seconds before hiding the loader
+                setTimeout(function() {
+                    $('#ripple-loader').hide();
+                    $('#ripple-overlay').hide();
+                }, 150);
+            });
         });
     </script>
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -123,6 +138,14 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ4R6R4T" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Ripple Loader and Overlay -->
+    <div class="ripple-overlay" id="ripple-overlay"></div>
+    <div class="ripple-loader" id="ripple-loader">
+        <div></div>
+        <div></div>
+    </div>
+
     <div class="container">
 
         <section id="hero">
