@@ -1,0 +1,102 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    flex-direction: column;
+}
+
+.cogs-container {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    z-index: -1;
+}
+
+.cog {
+    width: 100px;
+    height: 100px;
+    background: url('cog.svg') no-repeat center center;
+    background-size: contain;
+    position: absolute;
+}
+
+.cog1 {
+    animation: spin 4s linear infinite;
+    top: -50px;
+    left: -50px;
+}
+
+.cog2 {
+    animation: spin 6s linear infinite reverse;
+    top: 50px;
+    left: 50px;
+}
+
+.cog3 {
+    animation: spin 8s linear infinite;
+    top: -100px;
+    left: 100px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.container {
+    text-align: center;
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+    color: #6c757d;
+    margin-bottom: 30px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: #6c757d;
+    font-size: 1.2em;
+}

@@ -1,0 +1,20 @@
+{
+    "hero": {
+        "name": "Joseph P. Alexander",
+        "title": "Full Stack Developer",
+        "profilePic": "assets/hero.jpg"
+    },
+    "aboutme": {
+        "header": "About Me",
+        "content": "I'm Joe Alexander, a dedicated Web Developer based in London, England, with a strong foundation in web development.<br /> <b>I hold a BSc (Hons) in Computer Science (First Class)</b> and have experience in data engineering and full-stack development.<br /><br /> My professional journey has seen me work with organizations like <b class=\"tooltip-companies\"><u>SSY in London</u><span class=\"tooltiptext\">Simpson Spence Young (SSY) is one of the world's largest and most established shipbroking companies. Founded in 1880, SSY provides a wide range of services in the maritime and shipping industry. These services include chartering, sale and purchase of ships, market research, and financial advice related to shipping. SSY operates globally with offices in major shipping hubs around the world.</span></b> and <b class=\"tooltip-companies\"><u>MasterControl in Utah</u><span class=\"tooltiptext\">MasterControl Inc. provides quality management software (QMS) and services that help regulated companies, particularly in life sciences and manufacturing, ensure compliance with regulatory standards and enhance operational efficiency. Their software solutions manage key quality processes like document control, change control, audits, CAPA, training management, and supplier management.</span></b>, where I've honed my skills in <b>C#, T-SQL, and full-stack development</b>. I'm passionate about creating efficient, scalable solutions and enjoy working in dynamic environments that challenge my technical and leadership abilities."
+    },
+    "skills": {
+        "header": "Portfolio",
+        "content": "While I aim to keep my work and personal life distinct, I occasionally take on projects that I'm excited to share. You can find these here or on my GitHub page."
+    },
+    "contact": {
+        "header": "Contact",
+        "email": "joe@josephpaulalexander.com",
+        "linkedin": "https://www.linkedin.com/in/joecompare/"
+    }
+}
