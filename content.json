@@ -12,6 +12,17 @@
         "header": "Portfolio",
         "content": "While I aim to keep my work and personal life distinct, I occasionally take on projects that I'm excited to share. You can find these here or on my GitHub page."
     },
+    "technicals": {
+        "header": "Technical Skills",
+        "skills": [
+            { "name": "C#", "level": 8 },
+            { "name": "HTML", "level": 8 },
+            { "name": "CSS", "level": 5.5 },
+            { "name": "Python", "level": 8 },
+            { "name": "Node.js", "level": 7 },
+            { "name": "SQL", "level": 8 }
+        ]
+    },
     "contact": {
         "header": "Contact",
         "email": "joe@josephpaulalexander.com",

@@ -106,6 +106,10 @@
     
                 $('#skills-header').text(data.skills.header);
                 $('#skills-content').html(data.skills.content);
+
+                $('#technicals-header').text(data.technicals.header);
+                $('#skills-content').html(data.technicals.content);
+                generateHeatmap(data.technicals.skills);
     
                 $('#contact-header').text(data.contact.header);
                 $('#contact-email').text(data.contact.email);
@@ -120,6 +124,46 @@
                 }, 150);
             });
         });
+
+        function navigateToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function navigateUp() {
+            const sections = document.querySelectorAll('section');
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const rect = sections[i].getBoundingClientRect();
+                if (rect.top < window.innerHeight / 2) {
+                    if (i > 0) {
+                        sections[i - 1].scrollIntoView({ behavior: 'smooth' });
+                    }
+                    break;
+                }
+            }
+        }
+
+        function navigateDown() {
+            const sections = document.querySelectorAll('section');
+            for (let i = 0; i < sections.length; i++) {
+                const rect = sections[i].getBoundingClientRect();
+                if (rect.bottom > window.innerHeight / 2) {
+                    if (i < sections.length - 1) {
+                        sections[i + 1].scrollIntoView({ behavior: 'smooth' });
+                    }
+                    break;
+                }
+            }
+        }
+
+    function generateHeatmap(skills) {
+        const heatmapContainer = document.getElementById('heatmap');
+        skills.forEach(skill => {
+            const skillElement = document.createElement('div');
+            skillElement.className = 'heatmap-skill';
+            skillElement.style.backgroundColor = `rgba(0, 0, 255, ${skill.level / 10})`;            skillElement.textContent = skill.name;
+            heatmapContainer.appendChild(skillElement);
+        });
+    }
     </script>
 </head>
 
@@ -175,8 +219,6 @@
 
         </section>
 
-
-
         <section id="skills">
             <div class="centre aboutme">
                 <h1 class="header" id="skills-header"></h1>
@@ -189,6 +231,14 @@
             </div>
         </section>
 
+
+        <section id="technicals">
+            <div class="centre aboutme">
+                <h1 class="header" id="technicals-header"></h1>
+                <div id="heatmap" class="heatmap-container"></div>
+            </div>
+        </section>
+
         <section id="contact">
             <div class="centre">
                 <h1 class="header" id="contact-header"></h1>
@@ -198,11 +248,17 @@
                 </a>
             </div>
         </section>
-        <a onclick="navigatoToSection('hero')">
+        <a onclick="navigateToSection('hero')">
             <div id="scroll-to-top" class="scroll-to-top">
                 <img src="assets/up.svg" alt="Scroll to top" />
             </div>
         </a>
+
+        <!-- Up and Down Arrows -->
+        <div class="navigation-arrows">
+            <div class="arrow up-arrow" onclick="navigateUp()">&#9650;</div>
+            <div class="arrow down-arrow" onclick="navigateDown()">&#9660;</div>
+        </div>
 
     </div>
 
