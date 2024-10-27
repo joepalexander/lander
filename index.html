@@ -103,6 +103,7 @@
     
                 $('#aboutme-header').text(data.aboutme.header);
                 $('#aboutme-content').html(data.aboutme.content);
+                $('#aboutme-song').html(data.aboutme.song);                console.log(data.aboutme.song);
     
                 $('#skills-header').text(data.skills.header);
                 $('#skills-content').html(data.skills.content);
@@ -215,6 +216,8 @@
                 <div class="contactable-container"></div>
                 <div class="current-event" id="current-event">Loading...</div>
                 <div class="current-time" id="current-time">Loading...</div>
+               <br/><br/>
+                <div class="aboutme-song" id="aboutme-song"></div>
             </div>
 
         </section>
