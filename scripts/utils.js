@@ -37,6 +37,13 @@ document.addEventListener('wheel', (event) => {
     }, 100); // Adjust the debounce delay as needed
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img => {
+        img.setAttribute('aria-label', img.alt);
+    });
+});
+
 function updateURI() {
     const sections = document.querySelectorAll('section');
     let currentSection = '';
@@ -52,20 +59,14 @@ function updateURI() {
         history.pushState(null, '', `#${currentSection}`);
     }
     showScrollToTop();
-
-
 }
 
-
-function navigatoToSection(sectionId) {
+function navigateToSection(sectionId) {
     const section = document.getElementById(sectionId);
     section.scrollIntoView({ behavior: 'smooth' });
     history.pushState(null, '', `#${sectionId}`);
-    //check if the scroll-to-top button should be displayed
-
     showScrollToTop();
 }
-
 
 function showScrollToTop() {
    //if the href contains #hero, hide the scroll-to-top button
