@@ -4,6 +4,7 @@
 <head>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ripple.css">
+    <link rel="stylesheet" href="modern-styles.css">
 
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
@@ -51,6 +52,9 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap"
         rel="stylesheet">
 
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <!-- Structured Data for SEO (Schema.org) -->
     <script type="application/ld+json">
     {
@@ -88,6 +92,20 @@
       "url": "https://www.josephpaulalexander.com"
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Joseph Alexander",
+      "url": "https://yourwebsite.com",
+      "jobTitle": "Software Engineer",
+      "sameAs": [
+        "https://github.com/your-github-username",
+        "https://linkedin.com/in/your-linkedin-username"
+      ],
+      "knowsAbout": ["Software Development", "Web Development", "Machine Learning"]
+    }
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -102,7 +120,17 @@
     
                 $('#aboutme-header').text(data.aboutme.header);
                 $('#aboutme-content').html(data.aboutme.content);
-                $('#aboutme-song').html(data.aboutme.song);                console.log(data.aboutme.song);
+                
+                // Check if music should be displayed based on feature flag
+                if (data.featureFlags && data.featureFlags.showMusic) {
+                    // Music is enabled, display it in a responsive wrapper
+                    const songHTML = data.aboutme.song;
+                    $('#aboutme-song').html('<div class="music-player-wrapper">' + songHTML + '</div>');
+                    $('#aboutme-song').show();
+                } else {
+                    // Music is disabled, hide the container
+                    $('#aboutme-song').hide();
+                }
     
                 $('#skills-header').text(data.skills.header);
                 $('#skills-content').html(data.skills.content);
@@ -117,7 +145,6 @@
                 $('#contact-linkedin').attr('href', data.contact.linkedin);
     
                 // Hide the ripple loader and overlay
-                //wait 2 seconds before hiding the loader
                 setTimeout(function() {
                     $('#ripple-loader').hide();
                     $('#ripple-overlay').hide();
@@ -127,6 +154,7 @@
 
         function navigateToSection(sectionId) {
             document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+            updateActiveNavLink(sectionId);
         }
 
         function navigateUp() {
@@ -136,6 +164,7 @@
                 if (rect.top < window.innerHeight / 2) {
                     if (i > 0) {
                         sections[i - 1].scrollIntoView({ behavior: 'smooth' });
+                        updateActiveNavLink(sections[i - 1].id);
                     }
                     break;
                 }
@@ -149,25 +178,128 @@
                 if (rect.bottom > window.innerHeight / 2) {
                     if (i < sections.length - 1) {
                         sections[i + 1].scrollIntoView({ behavior: 'smooth' });
+                        updateActiveNavLink(sections[i + 1].id);
                     }
                     break;
                 }
             }
         }
 
-    function generateHeatmap(skills) {
-        const heatmapContainer = document.getElementById('heatmap');
-        skills.forEach(skill => {
-            const skillElement = document.createElement('div');
-            skillElement.className = 'heatmap-skill';
-            skillElement.style.backgroundColor = `rgba(0, 0, 255, ${skill.level / 10})`;            skillElement.textContent = skill.name;
-            heatmapContainer.appendChild(skillElement);
+        function updateActiveNavLink(sectionId) {
+            // Remove active class from all links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to current section link
+            const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-menu');
+            menu.classList.toggle('visible');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            
+            // Save preference to localStorage
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+            } else {
+                localStorage.setItem('theme', 'light');
+                document.querySelector('.theme-toggle i').className = 'fas fa-moon';
+            }
+        }
+
+        // Check for saved theme preference
+        function checkThemePreference() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+            }
+        }
+
+        function generateHeatmap(skills) {
+            const skillsGrid = document.getElementById('skills-grid');
+            skillsGrid.innerHTML = ''; // Clear existing skills
+            
+            skills.forEach(skill => {
+                const skillCard = document.createElement('div');
+                skillCard.className = 'skill-card';
+                
+                const skillName = document.createElement('div');
+                skillName.className = 'skill-name';
+                skillName.textContent = skill.name;
+                
+                const skillLevel = document.createElement('div');
+                skillLevel.className = 'skill-level';
+                skillLevel.style.backgroundColor = `var(--secondary-color)`;
+                skillLevel.style.height = `${skill.level * 10}%`;
+                
+                // Add skill level indicator
+                const indicator = document.createElement('div');
+                indicator.className = 'skill-indicator';
+                indicator.textContent = skill.level;
+                
+                skillCard.appendChild(skillName);
+                skillCard.appendChild(skillLevel);
+                skillCard.appendChild(indicator);
+                skillsGrid.appendChild(skillCard);
+            });
+            
+            // Add animation class after a slight delay for better performance
+            setTimeout(() => {
+                skillsGrid.classList.add('animate');
+            }, 300);
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            checkThemePreference();
+            
+            // Initialize AOS (Animate on Scroll)
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: false,
+                mirror: true
+            });
+            
+            // Set up scroll event to update active nav link
+            document.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('section');
+                let currentSectionId = '';
+                
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                        currentSectionId = section.id;
+                    }
+                });
+                
+                if (currentSectionId) {
+                    updateActiveNavLink(currentSectionId);
+                }
+            });
         });
-    }
     </script>
     <!-- Additional Meta Tags for SEO -->
     <meta name="robots" content="index, follow">
     <meta name="author" content="Joseph P. Alexander">
+
+    <!-- AOS (Animate On Scroll) Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Add AOS library for scroll animations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- End AOS library -->
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -181,10 +313,51 @@
 </script>
 
 <body>
+    <!-- Add this right after the opening body tag -->
+    <div class="page-transition-wrapper">
+        <div class="page-transition page-transition-1"></div>
+        <div class="page-transition page-transition-2"></div>
+        <div class="page-transition page-transition-3"></div>
+    </div>
+    <!-- Existing body content continues... -->
+
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ4R6R4T" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Skip to content link for accessibility -->
+    <a href="#hero" class="skip-to-content">Skip to content</a>
+
+    <!-- Vertical Progress Indicator -->
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+        <!-- Section markers will be added here by JavaScript -->
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu" id="nav-menu">
+        <div class="nav-menu-content">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#hero" class="nav-link active" onclick="navigateToSection('hero'); return false;">Home</a></li>
+                <li class="nav-item"><a href="#aboutme" class="nav-link" onclick="navigateToSection('aboutme'); return false;">About</a></li>
+                <li class="nav-item"><a href="#skills" class="nav-link" onclick="navigateToSection('skills'); return false;">Portfolio</a></li>
+                <li class="nav-item"><a href="#technicals" class="nav-link" onclick="navigateToSection('technicals'); return false;">Skills</a></li>
+                <li class="nav-item"><a href="#resume" class="nav-link" onclick="navigateToSection('resume'); return false;">Resume</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link" onclick="navigateToSection('contact'); return false;">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Menu Toggle Button -->
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
 
     <!-- Ripple Loader and Overlay -->
     <div class="ripple-overlay" id="ripple-overlay"></div>
@@ -195,85 +368,286 @@
 
     <div class="container">
 
-        <section id="hero">
-            <div class="centre">
-                <img class="profile-pic" id="profile-pic" alt="Profile picture of Joseph P. Alexander" loading="lazy" aria-label="Profile picture of Joseph P. Alexander" />
-                <h1 class="hero-header" id="hero-name"></h1>
-                <span id="hero-title"></span>
+        <section id="hero" class="modern-section">
+            <div class="parallax-bg hero-bg"></div>
+            <div class="modern-card fade-in" data-aos="fade-up">
+                <div class="modern-hero">
+                    <img class="modern-profile" id="profile-pic" alt="Profile picture of Joseph P. Alexander" loading="lazy" aria-label="Profile picture of Joseph P. Alexander" data-aos="zoom-in" data-aos-delay="300" />
+                    <h1 class="modern-name" id="hero-name" data-aos="fade-right" data-aos-delay="500"></h1>
+                    <span class="modern-title" id="hero-title" data-aos="fade-left" data-aos-delay="700"></span>
+                </div>
             </div>
         </section>
 
-
-        <section id="aboutme">
-            <div class="centre aboutme">
-                <h1 class="header" id="aboutme-header"></h1>
-                <p id="aboutme-content"></p>
-                <div class="timeline-container">
-                    <div class="timeline-line"></div>
-                    <div class="current-time-marker" id="current-time-marker">
-                        <div class="tooltip" id="current-tooltip">Loading...</div>
-                        <div class="tooltip-line" id="current-tooltip-line"></div>
+        <section id="aboutme" class="modern-section section-dark">
+            <div class="modern-card card-dark fade-in">
+                <h1 class="modern-name" id="aboutme-header"></h1>
+                <div class="about-container">
+                    <div class="about-text" id="aboutme-content"></div>
+                    <div class="enhanced-timeline">
+                        <div class="modern-timeline-container">
+                            <div class="modern-timeline-line"></div>
+                            <div class="modern-time-marker modern-current-marker" id="current-time-marker"></div>
+                        </div>
+                        <div class="modern-contactable-container" id="modern-contactable-container"></div>
+                        <div class="modern-current-activity" id="current-event">Loading...</div>
+                        <div class="modern-current-time" id="current-time">Loading...</div>
+                        <div class="aboutme-song" id="aboutme-song"></div>
                     </div>
                 </div>
-                <div class="contactable-container"></div>
-                <div class="current-event" id="current-event">Loading...</div>
-                <div class="current-time" id="current-time">Loading...</div>
-               <br/><br/>
-                <div class="aboutme-song" id="aboutme-song"></div>
             </div>
-
         </section>
 
-        <section id="skills">
-            <div class="centre aboutme">
-                <h1 class="header" id="skills-header"></h1>
-                <p id="skills-content"></p>
-                <div class="github">
-                    <a href="https://github.com/joepalexander" target="_blank">
-                        <img src="assets/github-mark-white.png" alt="GitHub profile of Joseph P. Alexander" loading="lazy" aria-label="GitHub profile of Joseph P. Alexander">
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">About Me</h2>
+                <div class="about-content">
+                    <div class="about-image" data-aos="fade-right">
+                        <img src="assets/hero.jpg" alt="Joseph Alexander">
+                    </div>
+                    <div class="about-text" data-aos="fade-left" data-aos-delay="100">
+                        <p>I'm a passionate frontend developer with over 5 years of experience creating beautiful, responsive web applications. I specialize in React, Vue.js, and modern JavaScript, with a strong focus on accessibility and performance optimization.</p>
+                        <p>With a background in both design and development, I bridge the gap between aesthetics and functionality, delivering pixel-perfect implementations of complex UI designs while maintaining clean, maintainable code.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio/Skills Section -->
+        <section id="skills" class="modern-section">
+            <div class="parallax-bg skills-bg"></div>
+            <div class="modern-card fade-in">
+                <div class="modern-skills">
+                    <h2>Portfolio</h2>
+                    <div class="skills-content">
+                        <p>Here are some projects I've worked on. Click on any project to learn more.</p>
+                        
+                        <!-- Portfolio filters -->
+                        <div class="portfolio-filters">
+                            <button class="filter-button active" data-filter="all">All</button>
+                            <button class="filter-button" data-filter="web">Web Development</button>
+                            <button class="filter-button" data-filter="design">Design</button>
+                            <button class="filter-button" data-filter="app">Applications</button>
+                        </div>
+                        
+                        <!-- Portfolio gallery -->
+                        <div class="portfolio-gallery">
+                            <!-- Project 1 -->
+                            <div class="portfolio-item" data-category="web app" data-aos="fade-up" data-aos-delay="100">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Project Dashboard" class="portfolio-img">
+                                <div class="portfolio-overlay">
+                                    <h3 class="portfolio-title">Analytics Dashboard</h3>
+                                    <p class="portfolio-description">Interactive data visualization dashboard with real-time updates</p>
+                                    <div class="portfolio-tags">
+                                        <span class="portfolio-tag">React</span>
+                                        <span class="portfolio-tag">D3.js</span>
+                                        <span class="portfolio-tag">Firebase</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Project 2 -->
+                            <div class="portfolio-item" data-category="design" data-aos="fade-up" data-aos-delay="200">
+                                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Project Design" class="portfolio-img">
+                                <div class="portfolio-overlay">
+                                    <h3 class="portfolio-title">E-commerce Redesign</h3>
+                                    <p class="portfolio-description">Complete UI/UX overhaul for an established e-commerce platform</p>
+                                    <div class="portfolio-tags">
+                                        <span class="portfolio-tag">Figma</span>
+                                        <span class="portfolio-tag">UI/UX</span>
+                                        <span class="portfolio-tag">Shopify</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Project 3 -->
+                            <div class="portfolio-item" data-category="app" data-aos="fade-up" data-aos-delay="300">
+                                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Mobile App" class="portfolio-img">
+                                <div class="portfolio-overlay">
+                                    <h3 class="portfolio-title">Fitness Tracker App</h3>
+                                    <p class="portfolio-description">Cross-platform mobile application for fitness tracking and goals</p>
+                                    <div class="portfolio-tags">
+                                        <span class="portfolio-tag">React Native</span>
+                                        <span class="portfolio-tag">Node.js</span>
+                                        <span class="portfolio-tag">MongoDB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Project 4 -->
+                            <div class="portfolio-item" data-category="web" data-aos="fade-up" data-aos-delay="300">
+                                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="E-commerce Website" class="portfolio-img">
+                                <div class="portfolio-overlay">
+                                    <h3 class="portfolio-title">E-commerce Platform</h3>
+                                    <p class="portfolio-description">Full-stack e-commerce solution with payment processing</p>
+                                    <div class="portfolio-tags">
+                                        <span class="portfolio-tag">NextJS</span>
+                                        <span class="portfolio-tag">Stripe</span>
+                                        <span class="portfolio-tag">MongoDB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Project 5 -->
+                            <div class="portfolio-item" data-category="app" data-aos="fade-up" data-aos-delay="400">
+                                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Mobile App Development" class="portfolio-img">
+                                <div class="portfolio-overlay">
+                                    <h3 class="portfolio-title">Fitness Tracker App</h3>
+                                    <p class="portfolio-description">Cross-platform mobile application for tracking workouts</p>
+                                    <div class="portfolio-tags">
+                                        <span class="portfolio-tag">React Native</span>
+                                        <span class="portfolio-tag">GraphQL</span>
+                                        <span class="portfolio-tag">AWS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Project 6 -->
+                            <div class="portfolio-item" data-category="web" data-aos="fade-up" data-aos-delay="500">
+                                <img src="https://images.unsplash.com/photo-1487014679447-9f8336841d58?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Portfolio Website" class="portfolio-img">
+                                <div class="portfolio-overlay">
+                                    <h3 class="portfolio-title">Portfolio Template</h3>
+                                    <p class="portfolio-description">Modern, responsive portfolio website template for developers</p>
+                                    <div class="portfolio-tags">
+                                        <span class="portfolio-tag">HTML/CSS</span>
+                                        <span class="portfolio-tag">JavaScript</span>
+                                        <span class="portfolio-tag">GitHub Pages</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Project 7 -->
+                            <div class="portfolio-item" data-category="design app" data-aos="fade-up" data-aos-delay="600">
+                                <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="AI App" class="portfolio-img">
+                                <div class="portfolio-overlay">
+                                    <h3 class="portfolio-title">AI Image Generator</h3>
+                                    <p class="portfolio-description">Web application that generates images using machine learning</p>
+                                    <div class="portfolio-tags">
+                                        <span class="portfolio-tag">Python</span>
+                                        <span class="portfolio-tag">TensorFlow</span>
+                                        <span class="portfolio-tag">Flask</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p class="github-text">Check out more of my projects on GitHub:</p>
+                        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="github-link">
+                            <img src="assets/github-mark-white.png" alt="GitHub Profile" class="github-icon">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portfolio Modal (Hidden by default) -->
+            <div class="portfolio-modal" id="portfolio-modal">
+                <div class="modal-content">
+                    <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+                    <div class="modal-image-container">
+                        <img src="" alt="" class="modal-image" id="modal-image">
+                    </div>
+                    <h2 class="modal-title" id="modal-title"></h2>
+                    <div class="modal-description" id="modal-description"></div>
+                    <div class="modal-links" id="modal-links">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="modal-link" id="demo-link">
+                            <span>Live Demo</span>
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="modal-link" id="code-link">
+                            <span>Source Code</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="technicals" class="modern-section">
+            <div class="modern-card fade-in" data-aos="fade-up">
+                <div class="modern-skills">
+                    <h1 class="modern-name" id="technicals-header" data-aos="fade-right" data-aos-delay="200"></h1>
+                    <div id="skills-grid" class="skills-grid" data-aos="fade-up" data-aos-delay="300"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="resume" class="modern-section">
+            <div class="parallax-bg resume-bg"></div>
+            <div class="modern-card fade-in">
+                <div class="resume-container">
+                    <h1 class="modern-name">My Resume</h1>
+                    <p class="resume-subheader">I'd be interested in hearing about exciting new opportunities</p>
+                    <iframe src="assets/josephalexander.pdf" class="resume-frame" title="Joseph P. Alexander's Resume"></iframe>
+                    <a href="assets/josephalexander.pdf" download="Joseph_P_Alexander_Resume.pdf" class="download-button">Download CV</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="modern-section section-dark">
+            <div class="modern-card card-dark fade-in">
+                <div class="resume-container">
+                    <h1 class="modern-name" id="contact-header"></h1>
+                    <p class="modern-title"><a id="contact-email" style="color: var(--secondary-color); text-decoration: none;"></a></p>
+                    <a id="contact-linkedin" target="_blank" class="github-link" aria-label="Visit LinkedIn profile">
+                        <img class="github-icon" src="assets/LI-In-Bug.png" alt="LinkedIn profile of Joseph P. Alexander" loading="lazy" />
                     </a>
                 </div>
             </div>
         </section>
-
-
-        <section id="technicals">
-            <div class="centre aboutme">
-                <h1 class="header" id="technicals-header"></h1>
-                <div id="heatmap" class="heatmap-container"></div>
-            </div>
-        </section>
-
-        <section id="resume">
-            <div class="centre">
-                <h1 class="header">My Resume</h1>
-                <h2 class="subheader">I'd be interested in hearing about exciting new opportunities</h2>
-                <iframe src="assets/josephalexander.pdf" style="width: 95vw; height: 80vh; border-radius: 5px;"></iframe>
-                <div class="download-cv">
-                    <a href="assets/josephalexander.pdf" download="Joseph_P_Alexander_Resume.pdf">Download CV</a>
+        
+        <section id="experience" class="modern-section">
+            <div class="modern-card" data-aos="fade-up">
+                <h2 class="card-title" data-aos="fade-right" data-aos-delay="200">Experience</h2>
+                <div id="timeline-container" data-aos="fade-up" data-aos-delay="400">
+                    <div id="timeline"></div>
+                    <div class="timeline">
+                        <!-- Experience items will be dynamically added here -->
+                        <div class="timeline-item" data-aos="fade-right">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Senior Frontend Developer</h3>
+                                <h4>Tech Innovations Inc.</h4>
+                                <p class="timeline-date">2021 - Present</p>
+                                <p>Led the frontend team in developing a sophisticated SaaS platform with React, resulting in a 40% increase in user engagement. Implemented CI/CD pipelines and reduced page load times by 60%.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Frontend Developer</h3>
+                                <h4>WebSolutions Co.</h4>
+                                <p class="timeline-date">2018 - 2021</p>
+                                <p>Developed responsive web applications using Vue.js and integrated with RESTful APIs. Collaborated with UX designers to implement intuitive user interfaces for clients in finance and healthcare sectors.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Web Developer Intern</h3>
+                                <h4>Digital Creative Agency</h4>
+                                <p class="timeline-date">2017 - 2018</p>
+                                <p>Assisted in the development of client websites using HTML, CSS, and jQuery. Gained experience in responsive design principles and cross-browser compatibility techniques.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-
-        <section id="contact">
-            <div class="centre">
-                <h1 class="header" id="contact-header"></h1>
-                <p><a id="contact-email"></a></p>
-                <a id="contact-linkedin" target="_blank">
-                    <img class="linkedin" src="assets/LI-In-Bug.png" alt="LinkedIn profile of Joseph P. Alexander" loading="lazy" aria-label="LinkedIn profile of Joseph P. Alexander">
-                </a>
-            </div>
-        </section>
-        <a onclick="navigateToSection('hero')">
-            <div id="scroll-to-top" class="scroll-to-top">
-                <img src="assets/up.svg" alt="Scroll to top" />
-            </div>
-        </a>
+        
+        <button onclick="navigateToSection('hero')" class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
+            <img src="assets/up.svg" alt="Scroll to top" />
+        </button>
 
         <!-- Up and Down Arrows -->
         <div class="navigation-arrows">
-            <div class="arrow up-arrow" onclick="navigateUp()">&#9650;</div>
-            <div class="arrow down-arrow" onclick="navigateDown()">&#9660;</div>
+            <button class="arrow up-arrow" onclick="navigateUp()" aria-label="Navigate to previous section">
+                <i class="fas fa-chevron-up"></i>
+                <span class="sr-only">Previous Section</span>
+            </button>
+            <button class="arrow down-arrow" onclick="navigateDown()" aria-label="Navigate to next section">
+                <i class="fas fa-chevron-down"></i>
+                <span class="sr-only">Next Section</span>
+            </button>
         </div>
 
     </div>

@@ -97,72 +97,162 @@ function updateTimeline() {
     const percentageOfDay = totalMinutes / (24 * 60);
 
     const marker = document.getElementById('current-time-marker');
-    const tooltip = document.getElementById('current-tooltip');
-    const tooltipLine = document.getElementById('current-tooltip-line');
     const currentEvent = document.getElementById('current-event');
 
     // Position current time marker based on time
-    marker.style.left = `calc(${percentageOfDay * 100}% - 10px)`;
+    if (marker) {
+        marker.style.left = `${percentageOfDay * 100}%`;
+        
+        // Add tooltip to the current marker
+        if (!marker.querySelector('.activity-tooltip')) {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'activity-tooltip';
+            marker.appendChild(tooltip);
+        }
+    }
 
     // Get the current activity
     const currentActivity = getCurrentActivity();
 
-    // Update tooltip text based on current activity
-    tooltip.textContent = currentActivity;
+    // Update tooltip for current marker
+    if (marker && marker.querySelector('.activity-tooltip')) {
+        marker.querySelector('.activity-tooltip').textContent = currentActivity;
+    }
 
-    // Update title attribute for tooltip
-    marker.title = currentActivity;
-
-    // Update current event text for mobile
-    currentEvent.textContent = `${currentActivity}`;
-
-    // Position the tooltip line
-    tooltipLine.style.left = `calc(${percentageOfDay * 100}% - 1px)`;
+    // Update current event text with icon
+    if (currentEvent) {
+        currentEvent.innerHTML = `<i class="fas fa-circle-dot"></i> ${currentActivity}`;
+    }
 
     // Update the green fill for elapsed events
-    const timeMarkers = document.querySelectorAll('.time-marker');
+    const timeMarkers = document.querySelectorAll('.modern-time-marker:not(#current-time-marker)');
     timeMarkers.forEach((timeMarker, index) => {
-        const [hours, minutes] = activities[index].start.split(":").map(Number);
-        const activityTime = hours * 60 + minutes;
-        if (totalMinutes >= activityTime) {
-            timeMarker.classList.add('elapsed');
-        } else {
-            timeMarker.classList.remove('elapsed');
+        if (index < activities.length) {
+            const [hours, minutes] = activities[index].start.split(":").map(Number);
+            const activityTime = hours * 60 + minutes;
+            
+            // Determine period of day for color coding
+            let periodClass = '';
+            if (hours >= 5 && hours < 12) {
+                periodClass = 'morning-marker';
+            } else if (hours >= 12 && hours < 17) {
+                periodClass = 'afternoon-marker';
+            } else if (hours >= 17 && hours < 22) {
+                periodClass = 'evening-marker';
+            } else {
+                periodClass = 'night-marker';
+            }
+            
+            // Apply appropriate period class
+            timeMarker.classList.add(periodClass);
+            
+            if (totalMinutes >= activityTime) {
+                timeMarker.classList.add('elapsed');
+            } else {
+                timeMarker.classList.remove('elapsed');
+            }
         }
     });
 
-    // Update the current time every minute
+    // Update the current time
     const currentTime = document.getElementById('current-time');
-    currentTime.textContent = getCurrentTime();
+    if (currentTime) {
+        currentTime.textContent = getCurrentTime();
+    }
+
+    // Update the current day display if it exists
+    const dayDisplay = document.querySelector('.timeline-day');
+    if (dayDisplay) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        dayDisplay.textContent = days[now.getUTCDay()];
+    }
 }
 
 function createTimeMarkers() {
-    const timelineContainer = document.querySelector('.timeline-container');
+    const timelineContainer = document.querySelector('.modern-timeline-container');
+    
+    if (!timelineContainer) return;
 
+    // Clear existing markers first
+    const existingMarkers = timelineContainer.querySelectorAll('.modern-time-marker:not(#current-time-marker)');
+    existingMarkers.forEach(marker => marker.remove());
+
+    // Add the timeline header if it doesn't exist
+    if (!document.querySelector('.timeline-header')) {
+        const timelineParent = timelineContainer.parentElement;
+        const header = document.createElement('div');
+        header.className = 'timeline-header';
+        header.innerHTML = `
+            <h3 class="timeline-title">My Day</h3>
+            <div class="timeline-day">${getDayOfWeek()}</div>
+        `;
+        timelineParent.insertBefore(header, timelineContainer);
+    }
+
+    // Add time period labels if they don't exist
+    if (!document.querySelector('.time-period-labels')) {
+        const labels = document.createElement('div');
+        labels.className = 'time-period-labels';
+        labels.innerHTML = `
+            <span>12am</span>
+            <span>6am</span>
+            <span>12pm</span>
+            <span>6pm</span>
+            <span>11pm</span>
+        `;
+        timelineContainer.insertAdjacentElement('afterend', labels);
+    }
+
+    // Create activity markers
     activities.forEach(activity => {
         const [hours, minutes] = activity.start.split(":").map(Number);
         const percentageOfDay = (hours * 60 + minutes) / (24 * 60);
 
         const timeMarker = document.createElement('div');
-        timeMarker.className = 'time-marker';
-        timeMarker.style.left = `calc(${percentageOfDay * 100}% - 10px)`;
-
+        timeMarker.className = 'modern-time-marker';
+        timeMarker.style.left = `${percentageOfDay * 100}%`;
+        
+        // Add tooltip element
         const tooltip = document.createElement('div');
-        tooltip.className = 'tooltip';
-        tooltip.textContent = activity.activity;
-
-        const tooltipLine = document.createElement('div');
-        tooltipLine.className = 'tooltip-line';
-
+        tooltip.className = 'activity-tooltip';
+        tooltip.textContent = `${formatTime(hours, minutes)} - ${activity.activity}`;
         timeMarker.appendChild(tooltip);
-        timeMarker.appendChild(tooltipLine);
+        
+        // Set attribute for accessibility
+        timeMarker.setAttribute('aria-label', `${formatTime(hours, minutes)} - ${activity.activity}`);
+        
         timelineContainer.appendChild(timeMarker);
     });
 }
 
-// New function to create contactable time series
+function formatTime(hours, minutes) {
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
+    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+}
+
+function getDayOfWeek() {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const now = new Date();
+    return days[now.getUTCDay()];
+}
+
 function createContactableMarkers() {
-    const contactableContainer = document.querySelector('.contactable-container');
+    const contactableContainer = document.getElementById('modern-contactable-container');
+    
+    if (!contactableContainer) return;
+    
+    // Add label for contactable hours
+    if (!document.querySelector('.contactable-label')) {
+        const label = document.createElement('div');
+        label.className = 'contactable-label';
+        label.innerHTML = '<i class="fas fa-phone"></i> Available for calls';
+        contactableContainer.parentNode.insertBefore(label, contactableContainer);
+    }
+    
+    // Clear existing markers
+    contactableContainer.innerHTML = '';
+    
     let contactablePeriod = [];
 
     // Determine contactable period based on the day
@@ -181,9 +271,13 @@ function createContactableMarkers() {
         const endPercentage = (endMinutes[0] * 60 + endMinutes[1]) / (24 * 60);
 
         const contactableMarker = document.createElement('div');
-        contactableMarker.className = 'contactable-marker';
-        contactableMarker.style.left = `calc(${startPercentage * 100}% - 10px)`;
-        contactableMarker.style.width = `calc(${(endPercentage - startPercentage) * 100}% - 10px)`;
+        contactableMarker.className = 'modern-contactable-marker';
+        contactableMarker.style.left = `${startPercentage * 100}%`;
+        contactableMarker.style.width = `${(endPercentage - startPercentage) * 100}%`;
+        
+        // Add tooltip for accessibility
+        contactableMarker.setAttribute('title', `Available from ${contactablePeriod.start} to ${contactablePeriod.end}`);
+        contactableMarker.setAttribute('aria-label', `Available from ${contactablePeriod.start} to ${contactablePeriod.end}`);
 
         contactableContainer.appendChild(contactableMarker);
     }
@@ -199,13 +293,43 @@ function getCurrentTime() {
         hours -= 24;
     }
 
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    // Format time as HH:MM with AM/PM
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
+    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
 }
 
 // Initialize time markers and update the timeline every minute
-createTimeMarkers();
-createContactableMarkers();
-updateTimeline();
-setInterval(updateTimeline, 60000);
+document.addEventListener('DOMContentLoaded', () => {
+    // Load Font Awesome if not already loaded
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+        const fontAwesome = document.createElement('link');
+        fontAwesome.rel = 'stylesheet';
+        fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+        document.head.appendChild(fontAwesome);
+    }
+
+    createTimeMarkers();
+    createContactableMarkers();
+    updateTimeline();
+    
+    // Update more frequently for smoother experience
+    setInterval(updateTimeline, 30000);
+});
+
+// If the document is already loaded, run the initialization
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+        const fontAwesome = document.createElement('link');
+        fontAwesome.rel = 'stylesheet';
+        fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+        document.head.appendChild(fontAwesome);
+    }
+    
+    createTimeMarkers();
+    createContactableMarkers();
+    updateTimeline();
+    setInterval(updateTimeline, 30000);
+}
 
 

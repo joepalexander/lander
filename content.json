@@ -1,4 +1,7 @@
 {
+    "featureFlags": {
+        "showMusic": false
+    },
     "hero": {
         "name": "Joseph P. Alexander",
         "title": "Full Stack Developer",
