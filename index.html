@@ -1,285 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ripple.css">
-
-    <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-MZ4R6R4T');</script>
-    <!-- End Google Tag Manager -->
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Meta Description for SEO -->
-    <meta name="description"
-        content="Joseph P. Alexander - Full Stack Developer based in London, England. Specializing in C#, T-SQL, and full-stack development with experience in web development, data engineering, and leadership.">
-
-    <!-- Meta Keywords for SEO -->
-    <meta name="keywords"
-        content="Joseph P. Alexander, Full Stack Developer, Web Developer, London, C#, T-SQL, data engineering, SSY, MasterControl">
-
-    <!-- Open Graph Meta Tags for social sharing -->
-    <meta property="og:title" content="Joseph P. Alexander - Full Stack Developer">
-    <meta property="og:description"
-        content="Experienced Web Developer with a strong foundation in C#, T-SQL, and full-stack development. Based in London, England.">
-    <meta property="og:image" content="assets/hero.jpg">
-    <meta property="og:url" content="https://www.josephpaulalexander.com">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Joseph P. Alexander">
-    <meta property="og:locale" content="en_GB">
-
-    <!-- Canonical Tag to avoid duplicate content issues -->
-    <link rel="canonical" href="https://www.josephpaulalexander.com">
-
-    <!-- Favicon -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-
-    <!-- Title Tag -->
-    <title>Joseph P. Alexander | Full Stack Developer | London, England</title>
-
-    <!-- Link to Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap"
-        rel="stylesheet">
-
-    <!-- Structured Data for SEO (Schema.org) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Joseph P. Alexander",
-      "jobTitle": "Full Stack Developer",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "London",
-        "addressCountry": "England"
-      },
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "University of Portsmouth",
-      },
-      "worksFor": {
-        "@type": "Organization",
-        "name": "SSY",
-        "sameAs": "https://www.ssyglobal.com"
-      },
-      "workLocation": {
-        "@type": "Place",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "London",
-          "addressCountry": "England"
-        }
-      },
-      "email": "mailto:joe@josephpaulalexander.com",
-      "sameAs": [
-        "https://www.linkedin.com/in/joecompare/"
-      ],
-      "image": "https://www.josephpaulalexander.com/assets/hero.jpg",
-      "url": "https://www.josephpaulalexander.com"
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Joseph Alexander</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Show the ripple loader and overlay
-            $('#ripple-loader').show();
-            $('#ripple-overlay').show();
-    
-            $.getJSON('./content.json', function(data) {
-                $('#profile-pic').attr('src', data.hero.profilePic);
-                $('#hero-name').text(data.hero.name);
-                $('#hero-title').text(data.hero.title);
-    
-                $('#aboutme-header').text(data.aboutme.header);
-                $('#aboutme-content').html(data.aboutme.content);
-                $('#aboutme-song').html(data.aboutme.song);                console.log(data.aboutme.song);
-    
-                $('#skills-header').text(data.skills.header);
-                $('#skills-content').html(data.skills.content);
-
-                $('#technicals-header').text(data.technicals.header);
-                $('#skills-content').html(data.technicals.content);
-                generateHeatmap(data.technicals.skills);
-    
-                $('#contact-header').text(data.contact.header);
-                $('#contact-email').text(data.contact.email);
-                $('#contact-email').attr('href', `mailto:${data.contact.email}`);
-                $('#contact-linkedin').attr('href', data.contact.linkedin);
-    
-                // Hide the ripple loader and overlay
-                //wait 2 seconds before hiding the loader
-                setTimeout(function() {
-                    $('#ripple-loader').hide();
-                    $('#ripple-overlay').hide();
-                }, 150);
-            });
-        });
-
-        function navigateToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function navigateUp() {
-            const sections = document.querySelectorAll('section');
-            for (let i = sections.length - 1; i >= 0; i--) {
-                const rect = sections[i].getBoundingClientRect();
-                if (rect.top < window.innerHeight / 2) {
-                    if (i > 0) {
-                        sections[i - 1].scrollIntoView({ behavior: 'smooth' });
-                    }
-                    break;
-                }
-            }
-        }
-
-        function navigateDown() {
-            const sections = document.querySelectorAll('section');
-            for (let i = 0; i < sections.length; i++) {
-                const rect = sections[i].getBoundingClientRect();
-                if (rect.bottom > window.innerHeight / 2) {
-                    if (i < sections.length - 1) {
-                        sections[i + 1].scrollIntoView({ behavior: 'smooth' });
-                    }
-                    break;
-                }
-            }
-        }
-
-    function generateHeatmap(skills) {
-        const heatmapContainer = document.getElementById('heatmap');
-        skills.forEach(skill => {
-            const skillElement = document.createElement('div');
-            skillElement.className = 'heatmap-skill';
-            skillElement.style.backgroundColor = `rgba(0, 0, 255, ${skill.level / 10})`;            skillElement.textContent = skill.name;
-            heatmapContainer.appendChild(skillElement);
-        });
+    .container {
+      text-align: center;
     }
-    </script>
-    <!-- Additional Meta Tags for SEO -->
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Joseph P. Alexander">
+    .name {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .title {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #cccccc;
+    }
+  </style>
 </head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z3YXMJDXJ1"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-Z3YXMJDXJ1');
-</script>
-
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ4R6R4T" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <!-- Ripple Loader and Overlay -->
-    <div class="ripple-overlay" id="ripple-overlay"></div>
-    <div class="ripple-loader" id="ripple-loader">
-        <div></div>
-        <div></div>
-    </div>
-
-    <div class="container">
-
-        <section id="hero">
-            <div class="centre">
-                <img class="profile-pic" id="profile-pic" alt="Profile picture of Joseph P. Alexander" loading="lazy" aria-label="Profile picture of Joseph P. Alexander" />
-                <h1 class="hero-header" id="hero-name"></h1>
-                <span id="hero-title"></span>
-            </div>
-        </section>
-
-
-        <section id="aboutme">
-            <div class="centre aboutme">
-                <h1 class="header" id="aboutme-header"></h1>
-                <p id="aboutme-content"></p>
-                <div class="timeline-container">
-                    <div class="timeline-line"></div>
-                    <div class="current-time-marker" id="current-time-marker">
-                        <div class="tooltip" id="current-tooltip">Loading...</div>
-                        <div class="tooltip-line" id="current-tooltip-line"></div>
-                    </div>
-                </div>
-                <div class="contactable-container"></div>
-                <div class="current-event" id="current-event">Loading...</div>
-                <div class="current-time" id="current-time">Loading...</div>
-               <br/><br/>
-                <div class="aboutme-song" id="aboutme-song"></div>
-            </div>
-
-        </section>
-
-        <section id="skills">
-            <div class="centre aboutme">
-                <h1 class="header" id="skills-header"></h1>
-                <p id="skills-content"></p>
-                <div class="github">
-                    <a href="https://github.com/joepalexander" target="_blank">
-                        <img src="assets/github-mark-white.png" alt="GitHub profile of Joseph P. Alexander" loading="lazy" aria-label="GitHub profile of Joseph P. Alexander">
-                    </a>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="technicals">
-            <div class="centre aboutme">
-                <h1 class="header" id="technicals-header"></h1>
-                <div id="heatmap" class="heatmap-container"></div>
-            </div>
-        </section>
-
-        <section id="resume">
-            <div class="centre">
-                <h1 class="header">My Resume</h1>
-                <h2 class="subheader">I'd be interested in hearing about exciting new opportunities</h2>
-                <iframe src="assets/josephalexander.pdf" style="width: 95vw; height: 80vh; border-radius: 5px;"></iframe>
-                <div class="download-cv">
-                    <a href="assets/josephalexander.pdf" download="Joseph_P_Alexander_Resume.pdf">Download CV</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact">
-            <div class="centre">
-                <h1 class="header" id="contact-header"></h1>
-                <p><a id="contact-email"></a></p>
-                <a id="contact-linkedin" target="_blank">
-                    <img class="linkedin" src="assets/LI-In-Bug.png" alt="LinkedIn profile of Joseph P. Alexander" loading="lazy" aria-label="LinkedIn profile of Joseph P. Alexander">
-                </a>
-            </div>
-        </section>
-        <a onclick="navigateToSection('hero')">
-            <div id="scroll-to-top" class="scroll-to-top">
-                <img src="assets/up.svg" alt="Scroll to top" />
-            </div>
-        </a>
-
-        <!-- Up and Down Arrows -->
-        <div class="navigation-arrows">
-            <div class="arrow up-arrow" onclick="navigateUp()">&#9650;</div>
-            <div class="arrow down-arrow" onclick="navigateDown()">&#9660;</div>
-        </div>
-
-    </div>
-
-    <script src="scripts/utils.js"></script>
-    <script src="scripts/timeline.js"></script>
+  <div class="container">
+    <div class="name">Joseph Alexander</div>
+    <div class="title">Full Stack Developer</div>
+  </div>
 </body>
+</html>
 
+You said:
+add mouse hover tracking 
+ChatGPT said:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Joseph Alexander</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      cursor: none;
+    }
+    .container {
+      text-align: center;
+      z-index: 1;
+    }
+    .name {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .title {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #cccccc;
+    }
+    .cursor-dot {
+      width: 10px;
+      height: 10px;
+      background: #ffffff;
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1000;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" id="cursor"></div>
+  <div class="container">
+    <div class="name">Joseph Alexander</div>
+    <div class="title">Full Stack Developer</div>
+  </div>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.top = `${e.clientY}px`;
+      cursor.style.left = `${e.clientX}px`;
+    });
+  </script>
+</body>
 </html>
