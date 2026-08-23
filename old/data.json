@@ -1,0 +1,180 @@
+{
+  "schema_version": "1.0",
+  "person": {
+    "name": {
+      "full": "Joseph Alexander"
+    },
+    "headline": "Head of Development - Offshore",
+    "location": {
+      "city": "London",
+      "country": "United Kingdom"
+    },
+    "links": [
+      {
+        "type": "email",
+        "subtype": "personal",
+        "value": "joe@josephpaulalexander.com"
+      },
+      {
+        "type": "email",
+        "subtype": "work",
+        "value": "j.alexander@ssyglobal.com"
+      },
+      {
+        "type": "github",
+        "value": "https://github.com/joepalexander"
+      },
+      {
+        "type": "linkedin",
+        "value": "https://linkedin.com/in/josephpalexander"
+      }
+    ],
+    "summary": "Head of Development (Offshore) at SSY. I lead a performant team building maritime trading platforms while staying deeply hands-on with the day-to-day coding. Currently delivering our core offshore database and custom AI-based integrations."
+  },
+  "skills": [
+    {
+      "name": "TypeScript",
+      "category": "language"
+    },
+    {
+      "name": "JavaScript",
+      "category": "language"
+    },
+    {
+      "name": "Python",
+      "category": "language"
+    },
+    {
+      "name": "SQL",
+      "category": "language"
+    },
+    {
+      "name": "C#",
+      "category": "language"
+    },
+    {
+      "name": "React",
+      "category": "frontend"
+    },
+    {
+      "name": "Next.js",
+      "category": "frontend"
+    },
+    {
+      "name": "HTML",
+      "category": "frontend"
+    },
+    {
+      "name": "CSS",
+      "category": "frontend"
+    },
+    {
+      "name": "Node.js",
+      "category": "backend"
+    },
+    {
+      "name": ".NET",
+      "category": "backend"
+    },
+    {
+      "name": "GraphQL",
+      "category": "backend"
+    },
+    {
+      "name": "REST APIs",
+      "category": "backend"
+    },
+    {
+      "name": "Microsoft Azure",
+      "category": "cloud"
+    },
+    {
+      "name": "AWS",
+      "category": "cloud"
+    },
+    {
+      "name": "Docker",
+      "category": "infrastructure"
+    },
+    {
+      "name": "Terraform",
+      "category": "infrastructure"
+    },
+    {
+      "name": "Serverless Framework",
+      "category": "infrastructure"
+    }
+  ],
+  "employment": [
+    {
+      "organization": {
+        "name": "SSY",
+        "location": "London"
+      },
+      "title": "Head of Development - Offshore",
+      "start_date": "2026-01",
+      "end_date": null,
+      "current": true,
+      "highlights": [
+        "Lead development for SSY’s offshore shipbroking desk and selected strategic projects, owning technical delivery for systems supporting 50+ brokers & 600+ global staff.",
+        "Set architecture, roadmap priorities, and delivery plans for a greenfield broking platform built around modern web, API, and cloud-native delivery patterns.",
+        "Lead and mentor a small development team, establishing delivery practices, code review standards, and maintainable engineering patterns for internal systems and broker tooling.",
+        "Work directly with brokers and senior stakeholders to turn complex fixture, enquiry, and workflow requirements into scalable platform capabilities."
+      ]
+    },
+    {
+      "organization": {
+        "name": "SSY",
+        "location": "London"
+      },
+      "title": "Full-Stack Engineer",
+      "start_date": "2023-08",
+      "end_date": "2026-01",
+      "current": false,
+      "highlights": [
+        "Supported SSY Navigator, a maritime intelligence platform serving 1,200+ internal and external users.",
+        "Delivered two mandated product rebrands under strict compliance deadlines with zero service downtime.",
+        "Architected and deployed a high-availability Azure microservice for PDF generation, removing vendor lock-in and reducing infrastructure costs."
+      ]
+    },
+    {
+      "organization": {
+        "name": "MasterControl",
+        "location": "Hampshire/Utah"
+      },
+      "title": "Data Services Engineer",
+      "start_date": "2021-08",
+      "end_date": "2023-08",
+      "current": false,
+      "highlights": [
+        "Led enterprise data migrations for 20+ customers representing millions in ARR with zero critical incidents.",
+        "Built automated migration tooling that significantly reduced migration timelines.",
+        "Engineered end-of-license data extraction workflows capable of processing 10TB+ datasets across AWS-backed storage and database environments.",
+        "Developed ETL pipelines and validation tooling using T-SQL, Node.js, Java, .NET and Python.",
+        "Provisioned and maintained AWS infrastructure (S3, Lambda, RDS, EC2) using Terraform and CLI tooling."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of Portsmouth",
+      "qualification": "BSc (Hons)",
+      "field": "Computer Science",
+      "classification": "First Class Honours",
+      "start_date": "2018",
+      "end_date": "2021"
+    }
+  ],
+  "expertise": [
+    "Engineering Leadership",
+    "Platform Architecture",
+    "ETL/Data Engineering",
+    "Data Pipelines",
+    "Requirements Analysis",
+    "Broker Workflow Analysis"
+  ],
+  "source": {
+    "type": "cv",
+    "generated_at": "2026-05-14"
+  }
+}

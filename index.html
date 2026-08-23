@@ -3,62 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <title>Joseph Alexander</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #121212;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      position: relative;
-      cursor: none;
-    }
-    .container {
-      text-align: center;
-      z-index: 1;
-    }
-    .name {
-      font-size: 3rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    .title {
-      font-size: 1.5rem;
-      font-weight: 300;
-      color: #cccccc;
-    }
-    .cursor-dot {
-      width: 10px;
-      height: 10px;
-      background: #ffffff;
-      border-radius: 50%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 1000;
-      transform: translate(-50%, -50%);
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="cursor-dot" id="cursor"></div>
-  <div class="container">
-    <div class="name">Joseph Alexander</div>
-    <div class="title">Full Stack Developer</div>
-  </div>
+  <header class="site-header site-header-dark" id="site-header">
+    <a class="site-brand" href="index.html">Joe Alexander</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="#profile-section">me</a>
+      <a href="#work">work</a>
+      <a href="#skills">skills</a>
+    </nav>
+  </header>
+  <main>
+  <section class="hero scroll-page" id="about">
+    <div class="container">
+      <div class="name">Joseph Alexander</div>
+      <div class="title" id="title"></div>
+    </div>
+  </section>
+  <section class="profile-section scroll-page" id="profile-section">
+    <div class="profile" id="profile"></div>
+  </section>
+  <section class="work-section scroll-page" id="work">
+    <div class="section-content" id="experience"></div>
+  </section>
+  <section class="skills-page scroll-page" id="skills">
+    <div class="section-content" id="skills-content"></div>
+  </section>
+  </main>
 
-  <script>
-    const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => {
-      cursor.style.top = `${e.clientY}px`;
-      cursor.style.left = `${e.clientX}px`;
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
